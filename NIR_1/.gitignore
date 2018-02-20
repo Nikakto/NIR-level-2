@@ -1,0 +1,6 @@
+*.pyc
+desktop.ini
+.idea/
+__pycache__/
+venv/
+
