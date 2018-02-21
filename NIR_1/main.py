@@ -121,7 +121,7 @@ def struct_expression(expression: str):
         multed_expression[index] = expr.split('+')
 
     y = 0
-    multed_expression = sorted(multed_expression, key=len)
+    # multed_expression = sorted(multed_expression, key=len)
     while len(multed_expression) > 1:
 
         operations = []
@@ -129,13 +129,14 @@ def struct_expression(expression: str):
         # processing inner sums
         sums = [(index, value) for index, value in enumerate(multed_expression) if isinstance(value, str)]
         for sumindex, sum_tuple in enumerate(sums):
-            valindex, value = sum_tuple
-            if valindex + 1 < len(sums):
-                a, b = multed_expression[valindex], multed_expression.pop(valindex + 1)
-                multed_expression[valindex] = f'y{y}'
-                operations.append( (multed_expression[valindex], (a, b), f'y{y}', len(structed)) )
+            valindex_1, value_1 = sum_tuple
+            if sumindex + 1 < len(sums):
+                valindex_2, value_2 = sums[sumindex+1]
+                a, b = multed_expression[valindex_1], multed_expression.pop(valindex_2)
+                multed_expression[valindex_1] = f'y{y}'
+                operations.append( (multed_expression[valindex_1], (a, b), f'y{y}', len(structed)) )
                 y += 1
-                sums.pop(valindex + 1), sums.pop(valindex)
+                sums.pop(valindex_2), sums.pop(valindex_1)
 
         for index, expr in enumerate(multed_expression):
 
