@@ -32,7 +32,7 @@ class DiGraph(nx.DiGraph):
 
                 if self.node_with_expression(expression) is None:
                     weight = self.edge_weight.get(act, 1)
-                    self.add_node(name, expression=expression, edges=edges, level=level, act=act, weight=weight)
+                    self.add_node(name, expression=expression, edges=edges, level=level, act=act, weight=weight, name=name)
 
         self.rebuild()
 
