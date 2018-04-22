@@ -23,7 +23,7 @@ class Process:
 
     def __str__(self):
         print_levels = ', '.join(repr(l) for l in self.levels)
-        return f'<Process> (buzy: {self.buzy}; task: {self.task}; time: {self.time}({self.time_real}); <levels: {print_levels})'
+        return f'<Process> (buzy: {self.buzy}; task: {self.task}; time: {self.time_real}; <levels: {print_levels})'
 
     def add_level(self, level):
         if isinstance(level, Level):
@@ -51,15 +51,33 @@ class Process:
             return [Process(l) for l in levels]
 
         else:
+            # levels = list(self.levels)
+            # levels.sort(key=lambda x: (x.time, -x.id))
+            #
+            # new_processes = [Process(levels.pop()), Process(levels.pop())]
+            # while len(levels):
+            #     new_processes.sort(key=lambda x: x.time)
+            #     new_processes[0].add_level(levels.pop())
+
             levels = list(self.levels)
-            levels.sort(key=lambda x: (x.time, -x.id))
+            levels.sort(key=lambda x: x.id)
 
-            new_processes = [Process(levels.pop()), Process(levels.pop())]
-            while len(levels):
-                new_processes.sort(key=lambda x: x.time)
-                new_processes[0].add_level(levels.pop())
+            split_point = 1
+            delta = None
+            for i in range(len(levels)):
+                delta_step = abs(sum(lvl.time for lvl in levels[:i]) - sum(lvl.time for lvl in levels[i:]))
+                if delta is None or delta_step < delta:
+                    delta = delta_step
+                    split_point = i
 
-            return new_processes
+            ps_up, ps_down = Process(list()), Process(list())
+            for i in range(split_point):
+                ps_up.add_level(levels.pop(0))
+
+            while levels:
+                ps_down.add_level(levels.pop())
+
+            return ps_up, ps_down
 
     def tick(self):
         self.buzy -= 1

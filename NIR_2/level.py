@@ -33,7 +33,7 @@ class Level:
 
             levels = Level(self.nodes), Level(self.nodes)
             for level in levels:
-                level.coeff *= 2
+                level.coeff *= self.coeff * 2
 
             return levels
 

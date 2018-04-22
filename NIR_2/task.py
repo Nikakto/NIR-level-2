@@ -5,7 +5,7 @@ class Task:
 
     id = 0
     graph = None
-    live_time = 0
+    live_time = -1
     levels = None
     nodes = None
     process = None
@@ -39,8 +39,7 @@ class Task:
 
     def do(self, processes):
 
-        if len(self.process):
-            self.live_time += 1
+        self.live_time += 1
 
         # remove finished calculations
         ps_to_remove = []
